@@ -23,7 +23,7 @@ public class DayDateUpload implements Job {
         logger.info("上传文件：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
 //        now = UploadConfig.getDirectory() + "全部Ａ股" + now + UploadConfig.getSuffix();
         try {
-//            FtpUtils.sshSftp(now);
+//            FtpUtils.sshSftp(new File(now));
             FtpUtils.batch(UploadConfig.getDirectory());
         } catch (Exception e) {
             logger.error(e.getMessage());

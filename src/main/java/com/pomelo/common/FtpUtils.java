@@ -60,10 +60,9 @@ public class FtpUtils {
     /**
      * 上传单个文件
      *
-     * @param fileName 文件地址
+     * @param file 要上传的文件
      */
-    public static void sshSftp(String fileName) throws FileNotFoundException {
-        File file = new File(fileName);
+    public static void sshSftp(File file) throws FileNotFoundException {
         FileInputStream fileInputStream = new FileInputStream(file);
         String name = !file.getName().contains("全部Ａ股") ? file.getName() : StringUtils.substringAfter(file.getName(), "全部Ａ股");
         try {
@@ -81,24 +80,17 @@ public class FtpUtils {
      */
     public static void batch(String dir) throws FileNotFoundException {
         File file = new File(dir);
-        if (!file.isDirectory()) { // 如果不是目录 执行上传单个的上传操作
+        if (!file.isDirectory()) { // 如果不是目录 执行单个的上传操作
             try {
-                sshSftp(dir);
+                sshSftp(new File(dir));
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }
-        File[] files = file.listFiles((f) -> f.getName().endsWith(UploadConfig.getSuffix()));
+        File[] files = file.listFiles((f) -> UploadConfig.getSuffix() == null ?  f.getName().endsWith(UploadConfig.getSuffix()) : !f.isDirectory());
         assert files != null;
         for (File f : files) {
-            FileInputStream fileInputStream = new FileInputStream(f);
-            String name = !f.getName().contains("全部Ａ股") ? f.getName() : StringUtils.substringAfter(f.getName(), "全部Ａ股");
-            try {
-                sftp.put(fileInputStream, name);
-            } catch (SftpException e) {
-                logger.error(e.getMessage());
-            }
-            logger.info("上传成功:" + UploadConfig.getFilePath() + name);
+            sshSftp(f);
         }
     }
 }
