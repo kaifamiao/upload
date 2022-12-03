@@ -1,0 +1,1 @@
+@start java -jar target/upload.jar
