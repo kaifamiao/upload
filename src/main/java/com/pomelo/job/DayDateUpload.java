@@ -18,12 +18,13 @@ public class DayDateUpload implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long start = System.currentTimeMillis();
         Date date = new Date();
-        String now = new SimpleDateFormat("yyyyMMdd").format(date);
+//        String now = new SimpleDateFormat("yyyyMMdd").format(date);
         Logger logger = LoggerFactory.getLogger(Main.class);
         logger.info("上传文件：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
-        now = UploadConfig.getDirectory() + "全部Ａ股" + now + UploadConfig.getSuffix();
+//        now = UploadConfig.getDirectory() + "全部Ａ股" + now + UploadConfig.getSuffix();
         try {
-            FtpUtils.sshSftp(now);
+//            FtpUtils.sshSftp(now);
+            FtpUtils.batch(UploadConfig.getDirectory());
         } catch (Exception e) {
             logger.error(e.getMessage());
             return;
