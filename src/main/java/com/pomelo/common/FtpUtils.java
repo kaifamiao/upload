@@ -87,7 +87,7 @@ public class FtpUtils {
                 logger.error(e.getMessage());
             }
         }
-        File[] files = file.listFiles((f) -> UploadConfig.getSuffix() == null ?  f.getName().endsWith(UploadConfig.getSuffix()) : !f.isDirectory());
+        File[] files = file.listFiles((f) -> UploadConfig.getSuffix() != null ?  f.getName().endsWith(UploadConfig.getSuffix()) : !f.isDirectory());
         assert files != null;
         for (File f : files) {
             sshSftp(f);
